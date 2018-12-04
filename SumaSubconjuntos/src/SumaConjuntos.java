@@ -1,105 +1,30 @@
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
+import java.util.stream.Stream;
 
 public class SumaConjuntos {
-    private int m;
-    private int c;
-    private int n;
-    private int[] subconjunto;
-    private int sumaSubconjunto;
-    private ArrayList<Integer> pendientes;
-    private ArrayList<Integer> provisional;
-    private ArrayList<int[]> solucion;
 
-    private SumaConjuntos(int c, int m, ArrayList<Integer> listaInicial) {
-        this.m = m;
-        this.c = c;
-        subconjunto = new int[m];
-        solucion = new ArrayList<>();
-        pendientes = listaInicial;
 
-        while(!pendientes.isEmpty()) {
-            sumaSubconjunto = 0;
-            n = pendientes.size() - 1;
-            int contadorM = 2;
-            int indexElegido = 0;
-            ArrayList<Integer> indexElegidos = new ArrayList<>();
+    public static void main (String[] args) throws IOException {
 
-            while (n >= 0) {
-                if (pendientes.get(n) < c - m + 1) {
-                    subconjunto[0] = pendientes.get(n);
-                    sumaSubconjunto = pendientes.get(n);
-                    pendientes.remove(n);
-                    n--;
-                    break;
+
+        for (String argument : args) {
+
+            if ("-.*".matches(argument)){
+                switch (argument) {
+                    case "-h": imprimirHelp(); break;
+                    case "-t": System.out.print("-t"); break;
                 }
-                pendientes.remove(n);
-                n--;
-            }
-            if (n == -1) {
-                break; // Fin del programa, no hay ningun valor con el que se pueda formar un subconjunto que cumpla las condiciones
-            }
-
-            provisional = pendientes;
-
-            while (contadorM < m && provisional.size() > 1) { // Desde la segunda posicion del subconjunto a la penultima
-
-                if (sumaSubconjunto + provisional.get(0) < c - m + contadorM) { // Si la suma de los valores elegidos es viable
-                    subconjunto[contadorM-1] = provisional.get(0); // Asignamos a la posicion emesima el valor correspondiente
-                    sumaSubconjunto = sumaSubconjunto + provisional.get(0); // Actualizamos sumaSubconjuntos
-                    indexElegidos.add(indexElegido);
-                    provisional.remove(0);
-                    indexElegido++;
-                    contadorM++;
-                }
-                else {
-                    provisional.remove(0);
-                    indexElegido++;
-                }
-            }
-
-            if (contadorM < m) {
                 continue;
             }
 
-            if (contadorM == m) {
-                while (!provisional.isEmpty()) {
-                    if (sumaSubconjunto + provisional.get(0) == c) {
-                        subconjunto[m-1] = provisional.get(0);
-                        indexElegidos.add(indexElegido);
-                        for (int a : indexElegidos) {
-                            pendientes.remove(a);
-                        }
-                        int k = 0;
-                        int[] subSolucion = new int[m];
-                        for (Integer numeroSolucion : subconjunto) {
-                            subSolucion[k] = numeroSolucion;
-                            k++;
-                        }
-                        solucion.add(subSolucion);
-                        break;
-                    }
-                    provisional.remove(0);
-                    indexElegido++;
-                }
-            }
+            new InputOutput(argument, argument);
         }
-    }
 
-    private void imprimirSolucion(){
-        for (int[] conjunto : solucion) {
-            System.out.println();
-            System.out.println("Subconjunto: ");
-            for (Integer numero : conjunto) {
-                System.out.print(numero + "  ");
-            }
-        }
-    }
-
-
-
-    public static void main (String[] args) {
-        SumaConjuntos subconjuntos = new SumaConjuntos(10, 2, new ArrayList<>(Arrays.asList(3, 4, 6, 7)));
-        subconjuntos.imprimirSolucion();
     }
 }
