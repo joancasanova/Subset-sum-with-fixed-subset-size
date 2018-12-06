@@ -10,7 +10,11 @@ public class Algoritmo {
     private ArrayList<Integer> provisional;
     private ArrayList<int[]> solucion;
 
-    private Algoritmo(int c, int m, ArrayList<Integer> listaInicial) {
+    public ArrayList<int[]> getSolucion() {
+        return solucion;
+    }
+
+    public Algoritmo(ArrayList<Integer> listaInicial, int m, int c) {
         this.m = m;
         this.c = c;
         subconjunto = new int[m];
