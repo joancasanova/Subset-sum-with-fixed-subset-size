@@ -1,91 +1,74 @@
 import java.util.ArrayList;
 
-public class Algoritmo {
+
+/**
+ * Clase que contiene el algoritmo que calcula el resultados del problema de la Practica 1 de Programacion y Estructuras
+ * de Datos Avanzadas del curso 2018-2019 por la U.N.E.D.
+ *
+ * @author Juan Francisco Casanova Ferrer
+ */
+class Algoritmo {
     private int m;
     private int c;
-    private int n;
-    private int[] subconjunto;
-    private int sumaSubconjunto;
-    private ArrayList<Integer> pendientes;
-    private ArrayList<Integer> provisional;
-    private ArrayList<int[]> solucion;
+    private ArrayList<int[]> solucion; // Lista que contiene todos los subconjuntos que forman parte de la solucion.
 
-    public ArrayList<int[]> getSolucion() {
-        return solucion;
-    }
-
-    public Algoritmo(ArrayList<Integer> listaInicial, int m, int c) {
+    /**
+     * @param conjuntoA Conjunto inicial de entrada
+     * @param m         Tamaño de cada subconjunto
+     * @param c         suma objetivo para los subconjuntos
+     */
+    Algoritmo(ArrayList<Integer> conjuntoA, int m, int c) {
         this.m = m;
         this.c = c;
-        subconjunto = new int[m];
         solucion = new ArrayList<>();
-        pendientes = listaInicial;
 
-        while(!pendientes.isEmpty()) {
-            sumaSubconjunto = 0;
-            n = pendientes.size() - 1;
-            int contadorM = 2;
-            int indexElegido = 0;
-            ArrayList<Integer> indexElegidos = new ArrayList<>();
+        // Inicio del calculo.
+        subconjuntosSumaDada(conjuntoA, new int[m], 0, 0);
+    }
 
-            while (n >= 0) {
-                if (pendientes.get(n) < c - m + 1) {
-                    subconjunto[0] = pendientes.get(n);
-                    sumaSubconjunto = pendientes.get(n);
-                    pendientes.remove(n);
-                    n--;
-                    break;
-                }
-                pendientes.remove(n);
-                n--;
+    /**
+     * Algoritmo que toma el equema de vuelta atras
+     *
+     * @param conjunto    Conjunto de entrada
+     * @param subconjunto Array donde se guardan los elementos candidatos a formar una solucion
+     * @param nivel       Corresponde con el numero de sumandos guardados en el subconjunto candidato a ser solucion
+     * @param suma        Almacena la suma de los valores guardados en el subconjunto candidato
+     */
+    private void subconjuntosSumaDada(ArrayList<Integer> conjunto, int[] subconjunto, int nivel, int suma) {
+
+        // Si no hemos alcanzado el maximo numero de sumandos permitido / Si no hemos llegado al ultimo nivel del arbol
+        if (nivel < m) {
+
+            // Mientras el conjunto contenga candidatos
+            while (!conjunto.isEmpty()) {
+
+                // Asignamos el primer elemento del conjunto al subconjunto candidato en la posicion del nivel actual
+                subconjunto[nivel] = conjunto.get(0);
+
+                // Invocamos de nuevo el algoritmo para el siguiente nivel
+                ArrayList<Integer> conjuntoB = new ArrayList<>(conjunto);
+                conjuntoB.remove(0);
+                subconjuntosSumaDada(conjuntoB, subconjunto, nivel + 1, suma + conjunto.get(0));
+
+                // Eliminamos el primer elemento del conjunto, ya que hemos probado todas las posibles combinacines
+                conjunto.remove(0);
             }
-            if (n == -1) {
-                break; // Fin del programa, no hay ningun valor con el que se pueda formar un subconjunto que cumpla las condiciones
-            }
+        }
 
-            provisional = pendientes;
+        // Si hemos alcanzado el ultimo nivel / Si hemos alcanzado el maximo numero de sumandos
+        if (nivel == m) {
 
-            while (contadorM < m && provisional.size() > 1) { // Desde la segunda posicion del subconjunto a la penultima
+            // Si la suma es igual a c
+            if (suma == c) {
 
-                if (sumaSubconjunto + provisional.get(0) < c - m + contadorM) { // Si la suma de los valores elegidos es viable
-                    subconjunto[contadorM-1] = provisional.get(0); // Asignamos a la posicion emesima el valor correspondiente
-                    sumaSubconjunto = sumaSubconjunto + provisional.get(0); // Actualizamos sumaSubconjuntos
-                    indexElegidos.add(indexElegido);
-                    provisional.remove(0);
-                    indexElegido++;
-                    contadorM++;
-                }
-                else {
-                    provisional.remove(0);
-                    indexElegido++;
-                }
-            }
-
-            if (contadorM < m) {
-                continue;
-            }
-
-            if (contadorM == m) {
-                while (!provisional.isEmpty()) {
-                    if (sumaSubconjunto + provisional.get(0) == c) {
-                        subconjunto[m-1] = provisional.get(0);
-                        indexElegidos.add(indexElegido);
-                        for (int a : indexElegidos) {
-                            pendientes.remove(a);
-                        }
-                        int k = 0;
-                        int[] subSolucion = new int[m];
-                        for (Integer numeroSolucion : subconjunto) {
-                            subSolucion[k] = numeroSolucion;
-                            k++;
-                        }
-                        solucion.add(subSolucion);
-                        break;
-                    }
-                    provisional.remove(0);
-                    indexElegido++;
-                }
+                // Añadimos el valor del subconjunto a la solucion
+                solucion.add(subconjunto.clone());
             }
         }
     }
+
+    ArrayList<int[]> getSolucion() {
+        return solucion;
+    }
+
 }

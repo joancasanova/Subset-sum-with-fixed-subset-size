@@ -3,9 +3,11 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
- * Datos de entrada para el algoritmo de Suma de Subconjuntos
+ * Datos de entrada para el algoritmo de suma de subconjuntos
  *
  * @author Juan Francisco Casanova Ferrer
  */
@@ -25,8 +27,8 @@ class Datos {
     /**
      * Constructor indicado para analizar y asignar los datos del problema a cada variable correspondiente
      *
-     * @param archivoEntrada  Archivo en el que se encuentran los datos
-     * @throws IOException    En el caso de que no se encuentre el archivo
+     * @param archivoEntrada Archivo en el que se encuentran los datos
+     * @throws IOException En el caso de que no se encuentre el archivo
      */
     Datos(String archivoEntrada) throws IOException {
         setDatos(archivoEntrada);
@@ -42,7 +44,7 @@ class Datos {
         return m;
     }
 
-    // Getter c: resultado de la suma de los elementos de cada subconjunto
+    // Getter c: resultado de la c de los elementos de cada subconjunto
     int getC() {
         return c;
     }
@@ -50,8 +52,8 @@ class Datos {
     /**
      * Lee el archivo de entrada y guarda los datos en las correspondientes variables
      *
-     * @param archivoEntrada  Archivo de entrada de datos
-     * @throws IOException    Si no se encuentra el archivo o está vacío
+     * @param archivoEntrada Archivo de entrada de datos
+     * @throws IOException Si no se encuentra el archivo o está vacío
      */
     private void setDatos(String archivoEntrada) throws IOException {
         BufferedReader br = new BufferedReader(new FileReader(archivoEntrada));
@@ -62,11 +64,10 @@ class Datos {
             String[] stringsArray = linea.split("\\s");
             ArrayList<Integer> stringsList = new ArrayList<>();
             for (String string : stringsArray) {
-                try{
+                try {
                     stringsList.add(Integer.parseInt(string));
-                }
-                catch (NumberFormatException e) {
-                    System.err.println("El archivo de datos contiene elementos que no son numeros enteros. " + e);
+                } catch (NumberFormatException e) {
+                    System.err.println("Error: El archivo de datos contiene elementos que no son numeros enteros. " + e);
                 }
             }
             datos.add(stringsList);
@@ -83,22 +84,39 @@ class Datos {
     /**
      * Comprueba que los datos se ajustan al formato correcto
      *
-     * @param datos  datos a comprobar
-     * @return       True si los datos son conrrectos, False si son incorrectos
+     * @param datos datos a comprobar
+     * @return True si los datos son conrrectos, False si son incorrectos
      */
     private boolean verificarDatos(ArrayList<ArrayList<Integer>> datos) {
-        if (datos.size() < 3 || datos.get(0).size() == 0 || datos.get(1).size() != 1|| datos.get(2).size() != 1
-                || datos.get(1).get(0) > datos.get(0).size()) {
-            System.err.println("El formato de los datos del archivo de entrada es incorrecto");
+        if (numRepetido(datos.get(0)) || datos.size() < 3 || datos.get(0).size() == 0 || datos.get(1).size() != 1 ||
+                datos.get(2).size() != 1 || datos.get(1).get(0) > datos.get(0).size()) {
+            System.err.println("Error: El formato de los datos del archivo de entrada es incorrecto");
             return false;
         }
         return true;
     }
 
     /**
+     * Comprueba si hay algun numero repetido en el conjunto de entrada A
+     *
+     * @param conjuntoA Conjunto de entrada inicial
+     */
+    private boolean numRepetido(ArrayList<Integer> conjuntoA) {
+        Set<Integer> set = new HashSet<>();
+        for (int i : conjuntoA) {
+            if (set.contains(i)) {
+                System.err.println("Error: El conjunto inicial contiene numeros repetidos");
+                return true;
+            }
+            set.add(i);
+        }
+        return false;
+    }
+
+    /**
      * Asigna a los datos unos valores por defecto
      */
-    private void datosPorDefecto(){
+    private void datosPorDefecto() {
         conjuntoA = new ArrayList<>(Arrays.asList(3, 4, 6, 7));
         m = 2;
         c = 10;
