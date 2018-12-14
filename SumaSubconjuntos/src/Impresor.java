@@ -1,4 +1,4 @@
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Imprime en pantalla
@@ -7,26 +7,14 @@ import java.util.ArrayList;
  */
 class Impresor {
 
-    Impresor(boolean help, boolean traza, ArrayList<int[]> solucion) {
-        if (help) {
-            imprimirHelp();
-        }
-        if (traza) {
-            imprimirT();
-        }
-        if (solucion != null) {
-            imprimirSolucion(solucion);
-        }
-    }
-
     /**
      * Muestra una ayuda y la sintaxis del comando
      */
-    private void imprimirHelp() {
+    public void imprimirHelp() {
         System.out.println();
         System.out.println("_______________________________________________________________________");
         System.out.println("DESCRIPCION:");
-        System.out.println("Dado un conjunto A de n números enteros y dos valores enteros, m y c,");
+        System.out.println("Dado un conjunto A de n numeros enteros y dos valores enteros, m y c,");
         System.out.println("donde m < n. Calcula todos los subconjuntos de A, de m elementos, que");
         System.out.println("la suma de sus valores sea c.");
         System.out.println("_______________________________________________________________________");
@@ -41,12 +29,12 @@ class Impresor {
         System.out.println("_______________________________________________________________________");
         System.out.println("FORMATO ENTRADA:");
         System.out.println("El fichero de datos de entrada consta de: ");
-        System.out.println("    - Una línea con los valores del conjunto A, separados por espacios");
-        System.out.println("    - Una segunda línea que indica el valor del parámetro m");
-        System.out.println("    - Una tercera línea con el valor del parámetro c");
+        System.out.println("    - Una linea con los valores del conjunto A, separados por espacios");
+        System.out.println("    - Una segunda linea que indica el valor del parametro m");
+        System.out.println("    - Una tercera linea con el valor del parametro c");
         System.out.println();
         System.out.println("En el caso de que no se encuentre un fichero de entrada o");
-        System.out.println("el formato de los datos sea incorrecto, se procederá a");
+        System.out.println("el formato de los datos sea incorrecto, se procedera a");
         System.out.println("usar la entrada por defecto:");
         System.out.println("A = {3, 4, 6, 7}");
         System.out.println("m = 2");
@@ -60,13 +48,17 @@ class Impresor {
     }
 
     /**
-     * Traza cada paso de manera que se describa la aplicación del algoritmo utilizado
+     * Imprime en pantalla la traza
+     *
+     * @param traza Lista de pasos seguidos por el algoritmo para encontrar las posibles soluciones
      */
-    private void imprimirT() {
+    public void imprimirTraza(List<String> traza) {
         System.out.println();
-        System.out.println("T:");
-        System.out.println("tttttttttttttttttttttttt");
-        System.out.println();
+        System.out.println("_______________________________________________________________________");
+        System.out.println("INICIO DEL ALGORITMO:");
+        for (String string : traza) {
+            System.out.println(string);
+        }
     }
 
     /**
@@ -74,10 +66,10 @@ class Impresor {
      *
      * @param solucion Array de subconjuntos de enteros por los que se ha dividido el conjunto inicial
      */
-    private void imprimirSolucion(ArrayList<int[]> solucion) {
+    public void imprimirSolucion(List<int[]> solucion) {
         System.out.println();
+        System.out.println("_______________________________________________________________________");
         System.out.println("SOLUCION:");
-        System.out.println("___________________________________________________________");
         for (int[] conjunto : solucion) {
             for (Integer numero : conjunto) {
                 System.out.print(numero + "  ");
