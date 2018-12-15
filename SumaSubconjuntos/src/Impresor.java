@@ -1,16 +1,22 @@
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Imprime en pantalla
+ * Encargado de imprimir en pantalla o de crear un archivo de impresion
  *
  * @author Juan Francisco Casanova Ferrer
  */
-class Impresor {
+final class Impresor {
 
     /**
      * Muestra una ayuda y la sintaxis del comando
      */
-    public void imprimirHelp() {
+    static void imprimirHelp() {
         System.out.println();
         System.out.println("_______________________________________________________________________");
         System.out.println("DESCRIPCION:");
@@ -35,10 +41,7 @@ class Impresor {
         System.out.println();
         System.out.println("En el caso de que no se encuentre un fichero de entrada o");
         System.out.println("el formato de los datos sea incorrecto, se procedera a");
-        System.out.println("usar la entrada por defecto:");
-        System.out.println("A = {3, 4, 6, 7}");
-        System.out.println("m = 2");
-        System.out.println("c = 10");
+        System.out.println("usar la entrada por consola.");
         System.out.println("___________________________________________________________");
         System.out.println("AUTOR: Juan Francisco Casanova Ferrer");
         System.out.println("Programacion y estructuras de datos avanzadas");
@@ -52,10 +55,10 @@ class Impresor {
      *
      * @param traza Lista de pasos seguidos por el algoritmo para encontrar las posibles soluciones
      */
-    public void imprimirTraza(List<String> traza) {
+    static void imprimirTraza(List<String> traza) {
         System.out.println();
         System.out.println("_______________________________________________________________________");
-        System.out.println("INICIO DEL ALGORITMO:");
+        System.out.println("TRAZA | INICIO DEL ALGORITMO:");
         for (String string : traza) {
             System.out.println(string);
         }
@@ -66,7 +69,7 @@ class Impresor {
      *
      * @param solucion Array de subconjuntos de enteros por los que se ha dividido el conjunto inicial
      */
-    public void imprimirSolucion(List<int[]> solucion) {
+    static void imprimirSolucion(List<int[]> solucion) {
         System.out.println();
         System.out.println("_______________________________________________________________________");
         System.out.println("SOLUCION:");
@@ -76,5 +79,25 @@ class Impresor {
             }
             System.out.println();
         }
+    }
+
+    /**
+     * Genera un archivo que contiene los datos de la solucion
+     * En el caso de que el archivo ya exista, dara un error
+     *
+     * @param archivoSalida Archivo donde se almacenara la solucion
+     * @param solucion      Array de subconjuntos de enteros por los que se ha dividido el conjunto inicial
+     */
+    static void archivoSalida(String archivoSalida, List<int[]> solucion) throws IOException {
+        ArrayList<String> filas = new ArrayList<>();
+        for (int[] conjunto : solucion) {
+            String fila = "";
+            for (Integer numero : conjunto) {
+                fila = fila + numero + "  ";
+            }
+            filas.add(fila);
+        }
+        Path file = Paths.get(archivoSalida);
+        Files.write(file, filas, Charset.forName("UTF-8"));
     }
 }

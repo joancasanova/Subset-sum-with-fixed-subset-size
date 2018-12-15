@@ -1,27 +1,51 @@
 import java.io.File;
+import java.io.IOException;
 
 /**
- * Clase que contiene el metodo Main del programa. Filtra los argumentos introducidos al invocar dicho metodo
- * <p>
- * TODO: Arreglar interpretes, arreglar main, archivo salida, revision y reformateo general
+ * Clase que contiene el metodo Main del programa
+ * Filtra los argumentos introducidos al invocar dicho metodo
+ * Controla el orden de ejecucion del programa
  *
  * @author Juan Francisco Casanova Ferrer
  */
-public class suma {
+class suma {
+    private boolean help = false;
+    private boolean traza = false;
+    private String archivoSalida = null;
+    private String archivoEntrada = null;
 
-    public static void main(String[] args) {
-        // Inicializamos cada uno de los posibles argumentos admitidos
-        boolean help = false;
-        boolean traza = false;
-        String archivoEntrada = null;
-        String archivoSalida = null;
-        Impresor impresor = new Impresor();
+    /**
+     * @param argumentos Argumentos pasados por el ususario al iniciar el programa
+     * @throws IOException Si no se localiza el archivo de entrada
+     */
+    private suma(String[] argumentos) throws IOException {
 
-        // Asignamos el valor correspondiente a los argumentos
-        for (String argumento : args) {
+        // Filtracion de los argumentos
+        filtrar(argumentos);
+
+        // Ejecucion del programa
+        ejecutar();
+    }
+
+    /**
+     * Metodo Main del programa
+     *
+     * @param args Argumentos de entrada
+     * @throws IOException Si no se encuentra el archivo de entrada especificado
+     */
+    public static void main(String[] args) throws IOException {
+        new suma(args);
+    }
+
+    /**
+     * Filtra los argumentos y los asigna a las variables correspondientes
+     *
+     * @param argumentos Argumentos de entrada
+     */
+    private void filtrar(String[] argumentos) {
+        for (String argumento : argumentos) {
             if (argumento.equals("-h")) {
-                impresor.imprimirHelp();
-                System.exit(0);
+                help = true;
             } else if (argumento.equals("-t")) {
                 traza = true;
             } else if (archivoEntrada != null) {
@@ -31,29 +55,62 @@ public class suma {
                 archivoEntrada = argumento;
             }
         }
+    }
 
-        // Parseamos los datos del archivo de entrada
-        InterpreteComando datos;
-        if (archivoEntrada == null) {
-            datos = new InterpreteComando();
-        } else {
-            File f = new File(archivoEntrada);
-            if (!f.exists()) {
-                datos = new InterpreteComando();
-            } else {
-                datos = new InterpreteComando(archivoEntrada);
-            }
+    /**
+     * Controlador del programa
+     *
+     * @throws IOException Si no se localiza el archivo de entrada
+     */
+    private void ejecutar() throws IOException {
+
+        // Si se desea mostrar la ayuda, se muestra y termina la ejecucion
+        if (help) {
+            Impresor.imprimirHelp();
+            System.exit(0);
         }
 
-        // Invocamos el algoritmo con los datos obtenidos
-        Algoritmo algoritmo = new Algoritmo(datos.getConjuntoA(), datos.getM(), datos.getC());
+        // Se interpretan los datos de entrada obtenidos mediante consola o mendiante un archivo
+        Interprete interprete = setInterprete();
 
-        // Imprimimos con o sin traza segun se haya especificado
-        if (traza) {
-            impresor.imprimirTraza(algoritmo.getTraza());
-            impresor.imprimirSolucion(algoritmo.getSolucion());
+        // Se realizan las operaciones del algoritmo
+        Algoritmo algoritmo = new Algoritmo(interprete.getConjuntoA(), interprete.getM(), interprete.getC());
+
+        // Se muestran los resultados
+        mostrarResultados(algoritmo);
+    }
+
+    /**
+     * Crea un interprete para datos a traves de la consola o a traves de un archivo
+     *
+     * @return Interprete de datos de entrada
+     * @throws IOException Si no se encuentra el archivo de entrada especificado
+     */
+    private Interprete setInterprete() throws IOException {
+        if (archivoEntrada == null || !new File(archivoEntrada).exists()) {
+            return new Interprete();
         } else {
-            impresor.imprimirSolucion(algoritmo.getSolucion());
+            return new Interprete(archivoEntrada);
+        }
+    }
+
+    /**
+     * Muestra los resultados de las operaciones
+     *
+     * @throws IOException Si no se encuentra el archivo de salida especificado
+     */
+    private void mostrarResultados(Algoritmo algoritmo) throws IOException {
+        if (traza) {
+            Impresor.imprimirTraza(algoritmo.getTraza());
+        }
+        if (archivoSalida != null) {
+            if (!new File(archivoSalida).exists()) {
+                Impresor.archivoSalida(archivoSalida, algoritmo.getSolucion());
+            } else {
+                System.err.println("Error: el archivo de salida ya existe");
+            }
+        } else {
+            Impresor.imprimirSolucion(algoritmo.getSolucion());
         }
     }
 }

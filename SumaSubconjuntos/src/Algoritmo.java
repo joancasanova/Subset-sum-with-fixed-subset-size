@@ -3,8 +3,8 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Clase que contiene el algoritmo que calcula el resultados del problema de la Practica 1 de Programacion y Estructuras
- * de InterpreteComando Avanzadas del curso 2018-2019 por la U.N.E.D.
+ * Clase que contiene el algoritmo que calcula el resultado del problema de la Practica 1 de Programacion y Estructuras
+ * de Datos Avanzadas del curso 2018-2019 por la U.N.E.D.
  *
  * @author Juan Francisco Casanova Ferrer
  */
@@ -53,10 +53,10 @@ class Algoritmo {
                 traza.add("Elementos candidatos por comprobar: " + conjunto);
                 traza.add("Se anexa " + conjunto.get(0) + " al subconjunto; Subconjunto: " + Arrays.toString(subconjunto));
 
-                // Elminiamos el elemento seleccionado del conjunto para la siguiente iteracion
+                // Eliminiamos el elemento seleccionado del conjunto para la siguiente iteracion
                 List<Integer> conjuntoB = new ArrayList<>(conjunto.subList(1, conjunto.size()));
 
-                // Invocamos de nuevo el algoritmo con las variables apropiadas para el siguiente nivel
+                // Invocamos de nuevo el algoritmo con las variables actualizadas para el siguiente nivel
                 subconjuntosSumaDada(conjuntoB, subconjunto, nivel + 1, suma + conjunto.get(0));
 
                 // Eliminamos el primer elemento del conjunto, ya que hemos probado todas las posibles combinacines
