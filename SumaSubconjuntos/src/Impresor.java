@@ -51,20 +51,6 @@ final class Impresor {
     }
 
     /**
-     * Imprime en pantalla la traza
-     *
-     * @param traza Lista de pasos seguidos por el algoritmo para encontrar las posibles soluciones
-     */
-    static void imprimirTraza(List<String> traza) {
-        System.out.println();
-        System.out.println("_______________________________________________________________________");
-        System.out.println("TRAZA | INICIO DEL ALGORITMO:");
-        for (String string : traza) {
-            System.out.println(string);
-        }
-    }
-
-    /**
      * Imprime en pantalla la solucion del problema
      *
      * @param solucion Array de subconjuntos de enteros por los que se ha dividido el conjunto inicial

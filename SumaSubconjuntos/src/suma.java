@@ -74,7 +74,7 @@ class suma {
         Interprete interprete = setInterprete();
 
         // Se realizan las operaciones del algoritmo
-        Algoritmo algoritmo = new Algoritmo(interprete.getConjuntoA(), interprete.getM(), interprete.getC());
+        Algoritmo algoritmo = new Algoritmo(interprete.getConjuntoA(), interprete.getM(), interprete.getC(), traza);
 
         // Se muestran los resultados
         mostrarResultados(algoritmo);
@@ -100,9 +100,6 @@ class suma {
      * @throws IOException Si no se encuentra el archivo de salida especificado
      */
     private void mostrarResultados(Algoritmo algoritmo) throws IOException {
-        if (traza) {
-            Impresor.imprimirTraza(algoritmo.getTraza());
-        }
         if (archivoSalida != null) {
             if (!new File(archivoSalida).exists()) {
                 Impresor.archivoSalida(archivoSalida, algoritmo.getSolucion());
