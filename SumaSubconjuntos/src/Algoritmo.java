@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -37,33 +36,6 @@ class Algoritmo {
      */
     private void subconjuntosSumaDada(List<Integer> conjunto, int[] subconjunto, int nivel, int suma, boolean traza) {
 
-        // Si no hemos alcanzado el maximo numero de sumandos permitido / Si no hemos llegado al ultimo nivel del arbol
-        if (nivel < m) {
-
-            // Mientras el conjunto contenga candidatos
-            while (!conjunto.isEmpty()) {
-
-                // Asignamos el primer elemento del conjunto al subconjunto candidato en la posicion del nivel actual
-                subconjunto[nivel] = conjunto.get(0);
-
-                if (traza) {
-                    System.out.println();
-                    System.out.println("Sumandos: " + nivel);
-                    System.out.println("Elementos candidatos por comprobar: " + conjunto);
-                    System.out.println("Se anexa " + conjunto.get(0) + " al subconjunto; Subconjunto: " + Arrays.toString(subconjunto));
-                }
-
-                // Eliminiamos el elemento seleccionado del conjunto para la siguiente iteracion
-                List<Integer> conjuntoB = new ArrayList<>(conjunto.subList(1, conjunto.size()));
-
-                // Invocamos de nuevo el algoritmo con las variables actualizadas para el siguiente nivel
-                subconjuntosSumaDada(conjuntoB, subconjunto, nivel + 1, suma + conjunto.get(0), traza);
-
-                // Eliminamos el primer elemento del conjunto, ya que hemos probado todas las posibles combinacines
-                conjunto = conjunto.subList(1, conjunto.size());
-            }
-        }
-
         // Si hemos alcanzado el ultimo nivel / Si hemos alcanzado el maximo numero de sumandos
         // Y si la suma es igual a c
         if (nivel == m) {
@@ -79,13 +51,36 @@ class Algoritmo {
                 solucion.add(subconjunto.clone());
 
                 if (traza) {
-                    System.out.println("Suma del subconjunto (" + suma + ") = suma objetivo (" + c + ")!");
                     System.out.println("Se anexa el subconjunto a la solucion!");
                 }
 
-            } else if (traza) {
-                System.out.println("Suma del subconjunto (" + suma + ") != suma objetivo (" + c + ")!");
-                System.out.println("Continuamos buscando");
+            }
+        }
+
+        // Si no hemos alcanzado el caso base
+        else {
+
+            // Mientras el conjunto contenga candidatos
+            while (!conjunto.isEmpty()) {
+
+                if (traza) {
+                    System.out.println();
+                    System.out.println("Sumandos: " + nivel);
+                    System.out.println("Elementos candidatos por comprobar: " + conjunto);
+                    System.out.println("Se anexa " + conjunto.get(0) + " al subconjunto");
+                }
+
+                // Asignamos el primer elemento del conjunto al subconjunto candidato en la posicion del nivel actual
+                subconjunto[nivel] = conjunto.get(0);
+
+                // Eliminiamos el elemento seleccionado del conjunto para la siguiente iteracion
+                List<Integer> conjuntoB = new ArrayList<>(conjunto.subList(1, conjunto.size()));
+
+                // Invocamos de nuevo el algoritmo con las variables actualizadas para el siguiente nivel
+                subconjuntosSumaDada(conjuntoB, subconjunto, nivel + 1, suma + conjunto.get(0), traza);
+
+                // Eliminamos el primer elemento del conjunto, ya que hemos probado todas las posibles combinacines
+                conjunto = conjunto.subList(1, conjunto.size());
             }
         }
     }
