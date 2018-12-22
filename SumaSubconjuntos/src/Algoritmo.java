@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -8,8 +9,10 @@ import java.util.List;
  * @author Juan Francisco Casanova Ferrer
  */
 class Algoritmo {
+    private List<Integer> conjuntoA;
     private int m;
     private int c;
+    private int i;
     private List<int[]> solucion; // Lista que contiene todos los subconjuntos que forman parte de la solucion.
 
     /**
@@ -18,27 +21,36 @@ class Algoritmo {
      * @param c         Suma objetivo para los subconjuntos
      */
     Algoritmo(List<Integer> conjuntoA, int m, int c, boolean traza) {
+        this.conjuntoA = conjuntoA;
         this.m = m;
         this.c = c;
         solucion = new ArrayList<>();
+        i = 0;
+
+        // Antes de inicial el calculo, debemos ordenar el conjunto inicial o podría producir resultados erroneos al
+        // introducir numeros negativos
+        Collections.sort(conjuntoA);
 
         // Inicio del calculo.
-        subconjuntosSumaDada(conjuntoA, 0, new int[m], 0, 0, traza);
+        subconjuntosSumaDada(0, new int[m], 0, 0, traza);
+
+        System.out.println(i);
     }
 
     /**
      * Algoritmo que toma el equema de vuelta atras
      *
-     * @param conjunto    Conjunto de entrada
+     * @param k           Indice para explorar el conjunto inicial A
      * @param subconjunto Array donde se guardan los elementos candidatos a formar una solucion
      * @param nivel       Corresponde con el numero de sumandos guardados en el subconjunto candidato a ser solucion
      * @param suma        Almacena la suma de los valores guardados en el subconjunto candidato
      */
-    private void subconjuntosSumaDada(List<Integer> conjunto, int k, int[] subconjunto, int nivel, int suma, boolean traza) {
+    private void subconjuntosSumaDada(int k, int[] subconjunto, int nivel, int suma, boolean traza) {
 
 
         // Si hemos alcanzado el ultimo nivel / Si hemos alcanzado el maximo numero de sumandos
         if (nivel == m) {
+            i++;
 
             if (traza) {
                 System.out.println();
@@ -55,26 +67,29 @@ class Algoritmo {
                     System.out.println("Suma del subconjunto (" + suma + ") = suma objetivo (" + c + ")!");
                     System.out.println("Se anexa el subconjunto a la solucion!");
                 }
-
             }
         }
         else {
 
             // Mientras haya opciones por explorar
-            while (k < conjunto.size()) {
-
+            while (k < conjuntoA.size()) {
+                i++;
                 if (traza) {
                     System.out.println();
                     System.out.println("Valor k: " + k);
                     System.out.println("Sumandos: " + nivel);
-                    System.out.println("Se anexa " + conjunto.get(k) + " al subconjunto candidato");
+                    System.out.println("Se anexa " + conjuntoA.get(k) + " al subconjunto candidato");
                 }
 
-                // Asignamos el primer elemento del conjunto al subconjunto candidato en la posicion del nivel actual
-                subconjunto[nivel] = conjunto.get(k);
+                // Asignamos el primer elemento k conjunto al subconjunto candidato en la posicion del nivel actual
+                subconjunto[nivel] = conjuntoA.get(k);
 
-                // Invocamos de nuevo el algoritmo con las variables actualizadas para el siguiente nivel
-                subconjuntosSumaDada(conjunto, k + 1, subconjunto, nivel + 1, suma + conjunto.get(k), traza);
+                // Comprueba si se ha superado la suma objetivo
+                if (suma + conjuntoA.get(k) <= c) {
+
+                    // Invocamos de nuevo el algoritmo con las variables actualizadas para el siguiente nivel
+                    subconjuntosSumaDada(k + 1, subconjunto, nivel + 1, suma + conjuntoA.get(k), traza);
+                }
 
                 k++;
             }
