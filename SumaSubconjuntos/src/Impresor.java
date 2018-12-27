@@ -77,11 +77,11 @@ final class Impresor {
     static void archivoSalida(String archivoSalida, List<int[]> solucion) throws IOException {
         ArrayList<String> filas = new ArrayList<>();
         for (int[] conjunto : solucion) {
-            String fila = "";
+            StringBuilder fila = new StringBuilder();
             for (Integer numero : conjunto) {
-                fila = fila + numero + "  ";
+                fila.append(numero).append(" ");
             }
-            filas.add(fila);
+            filas.add(fila.toString());
         }
         Path file = Paths.get(archivoSalida);
         Files.write(file, filas, Charset.forName("UTF-8"));

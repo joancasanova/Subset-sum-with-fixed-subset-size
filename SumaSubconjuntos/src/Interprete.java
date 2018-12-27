@@ -19,7 +19,7 @@ class Interprete {
     Interprete() {
 
         System.out.println();
-        System.out.println("No se ha detectado un archivo de entrada, procedemos a la entrada de datos por consola");
+        System.out.println("Procedemos a la entrada de datos por consola");
 
         String[] datos = new String[3];
         Scanner scanner = new Scanner(System.in);
@@ -55,7 +55,9 @@ class Interprete {
         }
 
         if (encontrarError(datos)) {
-            throw new IllegalArgumentException("Error: El formato del archivo de datos de entrada no es compatible");
+            System.err.println("Error: El formato del archivo de datos de entrada no es compatible");
+            System.err.println("Atencion: Corrija los errores del archivo de entrada e invoque de nuevo el programa");
+            System.exit(0);
         }
     }
 

@@ -88,6 +88,8 @@ class suma {
      */
     private Interprete setInterprete() throws IOException {
         if (archivoEntrada == null || !new File(archivoEntrada).exists()) {
+            System.out.println();
+            System.out.println("No se ha encontrado el archivo de entrada");
             return new Interprete();
         } else {
             return new Interprete(archivoEntrada);
