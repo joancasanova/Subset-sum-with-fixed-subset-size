@@ -106,7 +106,8 @@ class suma {
             if (!new File(archivoSalida).exists()) {
                 Impresor.archivoSalida(archivoSalida, algoritmo.getSolucion());
             } else {
-                System.err.println("Error: el archivo de salida ya existe");
+                System.err.println("Atencion: El archivo de salida ya existe, procedemos a imprimir el resultado por pantalla");
+                Impresor.imprimirSolucion(algoritmo.getSolucion());
             }
         } else {
             Impresor.imprimirSolucion(algoritmo.getSolucion());

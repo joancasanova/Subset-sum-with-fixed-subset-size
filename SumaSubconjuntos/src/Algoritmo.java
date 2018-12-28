@@ -13,7 +13,7 @@ class Algoritmo {
     private int m;
     private int c;
     private int n;
-    private boolean conjuntoMenorQueC;
+    private boolean posicionC;
     private int x;
     private List<int[]> solucion; // Lista que contiene todos los subconjuntos que forman parte de la solucion.
 
@@ -27,7 +27,7 @@ class Algoritmo {
         this.m = m;
         this.c = c;
         n = conjunto.size();
-        conjuntoMenorQueC = evaluarC();
+        posicionC = evaluarC();
         solucion = new ArrayList<>();
         x = 1;
 
@@ -86,19 +86,28 @@ class Algoritmo {
                 // Asignamos el primer elemento del conjunto al subconjunto candidato en la posicion del nivel actual
                 temp[nivel] = conjunto.get(k);
 
-                // Caso en el que c es mayor o igual al valor mínimo de A. Comprueba si se ha superado la suma objetivo
-                if (conjuntoMenorQueC && suma + conjunto.get(k) <= c) {
+                // Caso en el que c es mayor o igual al valor mínimo de A.
+                if (posicionC) {
 
-                    // Invocamos de nuevo el algoritmo con los parametros actualizadas para el siguiente nivel
-                    subconjuntosSumaDada(k + 1, temp, nivel + 1, suma + conjunto.get(k), n - k - 1, q - 1, k, traza);
+                    // Comprueba si se ha superado la suma objetivo
+                    if (suma + conjunto.get(k) <= c) {
+
+                        // Invocamos de nuevo el algoritmo con los parametros actualizadas para el siguiente nivel
+                        subconjuntosSumaDada(k + 1, temp, nivel + 1, suma + conjunto.get(k), n - k - 1, q - 1, k, traza);
+                    }
                 }
 
-                // Caso en el que c es menor al elemento minimo de A. Comprueba si se ha superado la suma objetivo
-                else if (!conjuntoMenorQueC && suma + conjunto.get(k) >= c) {
+                // Caso en el que c es menor al elemento minimo de A.
+                else {
 
-                    // Invocamos de nuevo el algoritmo con los parametros actualizadas para el siguiente nivel
-                    subconjuntosSumaDada(k + 1, temp, nivel + 1, suma + conjunto.get(k), n - k - 1, q - 1, k, traza);
+                    // Comprueba si se ha superado la suma objetivo
+                    if (suma + conjunto.get(k) >= c) {
+
+                        // Invocamos de nuevo el algoritmo con los parametros actualizadas para el siguiente nivel
+                        subconjuntosSumaDada(k + 1, temp, nivel + 1, suma + conjunto.get(k), n - k - 1, q - 1, k, traza);
+                    }
                 }
+
                 k++;
             }
         }
