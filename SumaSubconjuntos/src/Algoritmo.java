@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -7,6 +8,9 @@ import java.util.List;
  * de Datos Avanzadas del curso 2018-2019 por la U.N.E.D.
  *
  * @author Juan Francisco Casanova Ferrer
+ * teléfono: 625803490
+ * email:    juancasanovaferrer@gmail.com
+ * Programación y Estructuras de Datos Avanzadas - UNED - Centro Asociado Las Tablas
  */
 class Algoritmo {
     private List<Integer> conjunto;
@@ -14,7 +18,6 @@ class Algoritmo {
     private int c;
     private int n;
     private boolean posicionC;
-    private int x;
     private List<int[]> solucion; // Lista que contiene todos los subconjuntos que forman parte de la solucion.
 
     /**
@@ -29,15 +32,12 @@ class Algoritmo {
         n = conjunto.size();
         posicionC = evaluarC();
         solucion = new ArrayList<>();
-        x = 1;
 
         // Antes de inicial el calculo, debemos ordenar el conjunto o podría producir resultados con numeros negativos
         Collections.sort(conjunto);
 
         // Inicio del calculo.
         subconjuntosSumaDada(0, new int[m], 0, 0, n, m, -1, traza);
-
-        System.out.println(x);
     }
 
     /**
@@ -68,23 +68,23 @@ class Algoritmo {
 
                 if (traza) {
                     System.out.println("Suma del subconjunto (" + suma + ") = suma objetivo (" + c + ")!");
-                    System.out.println("Se anexa el subconjunto a la solucion!");
+                    System.out.println("Se anexa el subconjunto: " + Arrays.toString(temp) + " a la solucion!");
                 }
             }
         } else {
 
             // Mientras haya ramas por explorar
             while (k <= r + p - q + 1) {
-                x++;
+
+                // Asignamos el primer elemento del conjunto al subconjunto candidato en la posicion del nivel actual
+                temp[nivel] = conjunto.get(k);
 
                 if (traza) {
                     System.out.println();
                     System.out.println("Sumandos: " + nivel);
                     System.out.println("Se anexa " + temp[nivel] + " al subconjunto candidato");
+                    System.out.println("Subconjunto: " + Arrays.toString(temp));
                 }
-
-                // Asignamos el primer elemento del conjunto al subconjunto candidato en la posicion del nivel actual
-                temp[nivel] = conjunto.get(k);
 
                 // Caso en el que c es mayor o igual al valor mínimo de A.
                 if (posicionC) {
@@ -92,7 +92,7 @@ class Algoritmo {
                     // Comprueba si se ha superado la suma objetivo
                     if (suma + conjunto.get(k) <= c) {
 
-                        // Invocamos de nuevo el algoritmo con los parametros actualizadas para el siguiente nivel
+                        // Invocamos de nuevo el algoritmo con los parametros actualizados para el siguiente nivel
                         subconjuntosSumaDada(k + 1, temp, nivel + 1, suma + conjunto.get(k), n - k - 1, q - 1, k, traza);
                     }
                 }
@@ -103,7 +103,7 @@ class Algoritmo {
                     // Comprueba si se ha superado la suma objetivo
                     if (suma + conjunto.get(k) >= c) {
 
-                        // Invocamos de nuevo el algoritmo con los parametros actualizadas para el siguiente nivel
+                        // Invocamos de nuevo el algoritmo con los parametros actualizados para el siguiente nivel
                         subconjuntosSumaDada(k + 1, temp, nivel + 1, suma + conjunto.get(k), n - k - 1, q - 1, k, traza);
                     }
                 }

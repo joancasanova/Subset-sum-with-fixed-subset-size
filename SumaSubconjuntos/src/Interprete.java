@@ -4,9 +4,12 @@ import java.io.IOException;
 import java.util.*;
 
 /**
- * Interprete de datos de entrada
+ * Interprete de los datos albergados en el fichero de entrada
  *
  * @author Juan Francisco Casanova Ferrer
+ * teléfono: 625803490
+ * email:    juancasanovaferrer@gmail.com
+ * Programación y Estructuras de Datos Avanzadas - UNED - Centro Asociado Las Tablas
  */
 class Interprete {
     private List<Integer> conjuntoA;
@@ -86,7 +89,7 @@ class Interprete {
 
         // Los datos no existen
         if (datos[0] == null || datos[1] == null || datos[2] == null) {
-            System.err.println("Error: Deben existir datos de entrada");
+            System.err.println("Error: Deben existir todos los datos de entrada");
             return true;
         }
 

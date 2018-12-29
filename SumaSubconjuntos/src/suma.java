@@ -7,6 +7,9 @@ import java.io.IOException;
  * Controla el orden de ejecucion del programa
  *
  * @author Juan Francisco Casanova Ferrer
+ * teléfono: 625803490
+ * email:    juancasanovaferrer@gmail.com
+ * Programación y Estructuras de Datos Avanzadas - UNED - Centro Asociado Las Tablas
  */
 class suma {
     private boolean help = false;
